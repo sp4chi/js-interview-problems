@@ -18,10 +18,10 @@ class TaskExecutor {
     this.queue = [];
   }
 
-  runTask({ task, resolve, reject }) {
+  async runTask({ task, resolve, reject }) {
     this.activeTasks++;
     try {
-      const result = task();
+      const result = await task();
       resolve(result);
     } catch (err) {
       reject(err);
@@ -30,7 +30,7 @@ class TaskExecutor {
       // if queue not empty, pop a task and execute it
       const nextTask = this.queue.shift();
       if (nextTask) {
-        this.runTask(newTask);
+        this.runTask(nextTask);
       }
     }
   }
